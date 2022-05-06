@@ -42,8 +42,8 @@ class Home:
             # Update(self.window)
             # self.update_window()
         elif event.widget['text'] == '删除学生信息':
-            self.frame2.destroy()
-            # Delete(self.window)
+            # self.frame2.destroy()
+            Delete(self.window)
             # self.delete_window()
         elif event.widget['text'] == '退出系统':
             self.window.quit()

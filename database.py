@@ -137,17 +137,29 @@ class Database:
                              charset='utf8')
         cursor = db.cursor()
         sql_exact = '''SELECT * FROM student WHERE name = %s'''
-        n=cursor.execute(sql_exact, name_)
+        n = cursor.execute(sql_exact, name_)
         data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
         if not data:
             messagebox.showwarning('提示', '没有查询到数据')
         else:
-            messagebox.showinfo('查询成功', '查询到'+str(n)+'条数据')
+            messagebox.showinfo('查询成功', '查询到' + str(n) + '条数据')
         db.close()
         return data
 
-
+    def delete_id(self, id_):
+        db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                             charset='utf8')
+        cursor = db.cursor()
+        sql_delete = '''DELETE FROM student WHERE id = %s'''
+        n = cursor.execute(sql_delete, id_)  # 返回删除的数据条数
+        db.commit()
+        cursor.close()
+        if n == 0:
+            messagebox.showwarning('提示', '没有查询到数据')
+        else:
+            messagebox.showinfo('提示', '删除成功')
+        db.close()
 
 
 if __name__ == '__main__':

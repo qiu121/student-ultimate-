@@ -1,12 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
-from tkinter.ttk import Combobox
 from tkinter.ttk import Treeview
 from database import *
 
 
 class Query:
-    def __init__(self, master):
+    def __init__(self, master=None):
         self.window = master
         self.window = Tk()
         super().__init__()
@@ -18,6 +17,7 @@ class Query:
         self.query_window()
 
     def query_window(self):
+        """查询窗口"""
         Label(self.frame3, text='查询学生信息', font=('隶书', 20), bg='white',
               justify=CENTER).place(x=240, y=30, width=300, height=30)
 
@@ -37,7 +37,7 @@ class Query:
         self.table.column('专业', width=100, minwidth=100, anchor='center')
         self.table.column('班级', width=180, minwidth=180, anchor='center')
         # 设置表头
-        self.table.heading('学号', text='学号')
+        self.table.heading('学号', text='学号',command=lambda: messagebox.showinfo('提示', '学号'))
         self.table.heading('姓名', text='姓名')
         self.table.heading('性别', text='性别')
         self.table.heading('年龄', text='年龄')
