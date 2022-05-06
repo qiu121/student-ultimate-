@@ -95,7 +95,7 @@ class Query:
         self.entry = Entry(self.frame4, font=('微软雅黑', 12), width=20)
         self.entry.place(x=230, y=80)
         # 创建查询窗口的查询按钮
-        Button(self.frame4, text='模糊查询', width=10, height=1) \
+        Button(self.frame4, text='模糊查询', width=10, height=1, command=self.query_regexp) \
             .place(x=250, y=190, width=100, height=40)
         Button(self.frame4, text='精准查询', width=10, height=1, command=self.query_exact_info) \
             .place(x=250, y=250, width=100, height=40)
@@ -115,11 +115,11 @@ class Query:
             db_info = f.readlines()
         db_info = [i.strip() for i in db_info]
         # 连接数据库,创建DataBase对象实例
-        con = Database(db_info[0],
-                       int(db_info[1]),
-                       db_info[2],
-                       db_info[3],
-                       )
+        con1 = Database(db_info[0],
+                        int(db_info[1]),
+                        db_info[2],
+                        db_info[3],
+                        )
 
         # print(data)
         # 先判断是否输入为空，如果为空，则提示用户输入
@@ -128,7 +128,7 @@ class Query:
         # 如果输入不为空，则判断是否查有此数据
         else:
             # 查询为空时，将父窗口的查询button状态改为可用
-            data = con.query_id(info)  # DataBase类中的query_id方法,返回查询结果，以元组的形式返回
+            data = con1.query_id_exact(info)  # DataBase类中的query_id_exact方法,返回一条查询结果，以元组的形式返回
             # if not data:  # 查询为空，返回False
             #     self.btn["state"] = NORMAL
             if data:  # 查询成功,将查询到的数据显示在界面
@@ -137,3 +137,34 @@ class Query:
                 self.btn["state"] = NORMAL
                 self.table.delete(*self.table.get_children())
                 self.table.insert('', 'end', values=data)
+
+    def query_regexp(self):
+        """模糊查询学生信息"""
+        # 获取输入的学号
+        self.entry.focus()
+        info = int(self.entry.get())
+        # 获取配置文件中的数据库信息
+        with open('config.ini', 'r') as f:
+            db_info = f.readlines()
+        db_info = [i.strip() for i in db_info]
+        # 连接数据库,创建DataBase对象实例
+        con2 = Database(db_info[0],
+                        int(db_info[1]),
+                        db_info[2],
+                        db_info[3],
+                        )
+        # 判断输入是否为空
+        if info == '':
+            messagebox.showinfo('提示', '请输入学号片段')
+        else:
+            # 查询为空时，将父窗口的查询button状态改为可用
+            data, num = con2.query_id_regexp(info)  # DataBase类中的query_id_regexp方法,，以二维元组的形式返回返回多条查询结果,并返回查询条数
+            # if not data:  # 查询为空，返回False
+            #     self.btn["state"] = NORMAL
+            if data:  # 查询成功,将查询到的数据显示在界面
+                # 每次操作前先清空表格
+                self.window.destroy()
+                self.btn["state"] = NORMAL
+                self.table.delete(*self.table.get_children())
+                for i in range(num):
+                    self.table.insert('', 'end', values=data[i])

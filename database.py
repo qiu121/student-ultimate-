@@ -101,13 +101,13 @@ class Database:
         db.close()
         return data
 
-    def query_id(self, id_):
+    def query_id_exact(self, id_):
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_one = '''SELECT * FROM student WHERE id = %s'''
-        cursor.execute(sql_one, id_)
-        data = cursor.fetchone()
+        sql_exact = '''SELECT * FROM student WHERE id = %s'''
+        cursor.execute(sql_exact, id_)
+        data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
         if not data:
             messagebox.showwarning('提示', '没有查询到数据')
@@ -116,9 +116,27 @@ class Database:
         db.close()
         return data
 
+    def query_id_regexp(self, id_):
+        db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                             charset='utf8')
+        cursor = db.cursor()
+        sql_regexp = '''SELECT * FROM student WHERE id REGEXP '%s' '''
+        num = cursor.execute(sql_regexp, id_)
+        data = cursor.fetchall()  # 查询到的数据为空，返回空元组，值为False
+        cursor.close()
+        if not data:
+            messagebox.showwarning('提示', '没有查询到数据')
+        else:
+            messagebox.showinfo('提示', '查询成功')
+        db.close()
+        # for i in range(len(data)):
+        #     print(data[i])
+        # print(data)
+        return data, num  # 返回查询到的数据，和查询到的数据条数
+
 
 if __name__ == '__main__':
     # 测试
     con = Database('localhost', 3306, 'root', 'qiu18279664933')
     # con.insert(0, '张三', '男', 18, '计算机学院', '计算机1801', '计算机科学与技术')
-    con.query_id()
+    con.query_id_regexp(20)
