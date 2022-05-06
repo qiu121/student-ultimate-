@@ -121,7 +121,8 @@ class Database:
                              charset='utf8')
         cursor = db.cursor()
         sql_regexp = '''SELECT * FROM student WHERE id REGEXP '%s' '''
-        num = cursor.execute(sql_regexp, id_)
+        # 学号在数据库中的数据类型为整型数字，应先转换为整型再查询
+        num = cursor.execute(sql_regexp, int(id_))  # 返回查询到的数据条数
         data = cursor.fetchall()  # 查询到的数据为空，返回空元组，值为False
         cursor.close()
         if not data:
@@ -130,6 +131,23 @@ class Database:
             messagebox.showinfo('查询成功', '查询到 ' + str(num) + ' 条数据')
         db.close()
         return data, num  # 返回查询到的数据，和查询到的数据条数
+
+    def query_name_exact(self, name_):
+        db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                             charset='utf8')
+        cursor = db.cursor()
+        sql_exact = '''SELECT * FROM student WHERE name = %s'''
+        n=cursor.execute(sql_exact, name_)
+        data = cursor.fetchone()  # 查询到的数据为空，返回None
+        cursor.close()
+        if not data:
+            messagebox.showwarning('提示', '没有查询到数据')
+        else:
+            messagebox.showinfo('查询成功', '查询到'+str(n)+'条数据')
+        db.close()
+        return data
+
+
 
 
 if __name__ == '__main__':
