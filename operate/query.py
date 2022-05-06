@@ -54,7 +54,7 @@ class Query:
         Button(self.frame3, text='查询所有', width=10, height=1, command=self.query_all) \
             .place(x=760, y=130, width=100, height=40)
         # 将查询按钮写为类方法,便于在其他类中调用
-        self.btn = Button(self.frame3, text='学号查询', width=10, height=1, command=self.query_exact)
+        self.btn = Button(self.frame3, text='学号查询', width=10, height=1, command=self.query_id)
         self.btn.place(x=760, y=220, width=100, height=40)
         Button(self.frame3, text='退出', width=10, height=1, command=self.window.quit) \
             .place(x=760, y=310, width=100, height=40)
@@ -77,7 +77,7 @@ class Query:
         for i in data:
             self.table.insert('', 'end', values=i)
 
-    def query_exact(self):
+    def query_id(self):
         """精准查询"""
         # 设置查询按钮点击之后禁用，防止重复点击出现多个窗口
         self.btn["state"] = DISABLED
@@ -95,9 +95,9 @@ class Query:
         self.entry = Entry(self.frame4, font=('微软雅黑', 12), width=20)
         self.entry.place(x=230, y=80)
         # 创建查询窗口的查询按钮
-        Button(self.frame4, text='模糊查询', width=10, height=1, command=self.query_regexp) \
+        Button(self.frame4, text='模糊查询', width=10, height=1, command=self.query_regexp_id) \
             .place(x=250, y=190, width=100, height=40)
-        Button(self.frame4, text='精准查询', width=10, height=1, command=self.query_exact_info) \
+        Button(self.frame4, text='精准查询', width=10, height=1, command=self.query_exact_id) \
             .place(x=250, y=250, width=100, height=40)
         # 创建查询窗口的重置按钮
         Button(self.frame4, text='重置', width=10, height=1,
@@ -105,7 +105,7 @@ class Query:
             .place(x=250, y=310, width=100, height=40)
         self.window.mainloop()
 
-    def query_exact_info(self):
+    def query_exact_id(self):
         """精准查询学生信息"""
         # 获取输入的学号
         self.entry.focus()
@@ -121,7 +121,6 @@ class Query:
                         db_info[3],
                         )
 
-        # print(data)
         # 先判断是否输入为空，如果为空，则提示用户输入
         if info == '':
             messagebox.showinfo('提示', '请输入学号')
@@ -138,7 +137,7 @@ class Query:
                 self.table.delete(*self.table.get_children())
                 self.table.insert('', 'end', values=data)
 
-    def query_regexp(self):
+    def query_regexp_id(self):
         """模糊查询学生信息"""
         # 获取输入的学号
         self.entry.focus()
@@ -159,8 +158,6 @@ class Query:
         else:
             # 查询为空时，将父窗口的查询button状态改为可用
             data, num = con2.query_id_regexp(info)  # DataBase类中的query_id_regexp方法,，以二维元组的形式返回返回多条查询结果,并返回查询条数
-            # if not data:  # 查询为空，返回False
-            #     self.btn["state"] = NORMAL
             if data:  # 查询成功,将查询到的数据显示在界面
                 # 每次操作前先清空表格
                 self.window.destroy()

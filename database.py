@@ -127,11 +127,8 @@ class Database:
         if not data:
             messagebox.showwarning('提示', '没有查询到数据')
         else:
-            messagebox.showinfo('提示', '查询成功')
+            messagebox.showinfo('查询成功', '查询到 ' + str(num) + ' 条数据')
         db.close()
-        # for i in range(len(data)):
-        #     print(data[i])
-        # print(data)
         return data, num  # 返回查询到的数据，和查询到的数据条数
 
 
