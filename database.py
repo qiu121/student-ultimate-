@@ -56,14 +56,14 @@ class Database:
     def insert(self, *data):
         """
         参数data对应为学生数据表studb的字段数据,接受一个元组
-        id, name, gender,age,college,class,major
+        id, name, gender,age,college,major，class
         """
         db1 = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                               charset='utf8')
         cursor1 = db1.cursor()
         # a = ((data[0]), data[1], data[2], (data[3]), data[4], data[5], data[6])
         try:
-            sql1 = '''INSERT INTO student(id,name,gender,age,college,class,major)
+            sql1 = '''INSERT INTO student(id,name,gender,age,college,major,class)
             values (%s,%s,%s,%s,%s,%s,%s)'''
             cursor1.execute(sql1, data)
             db1.commit()
