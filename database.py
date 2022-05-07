@@ -40,9 +40,9 @@ class Database:
                         name VARCHAR(20) NOT NULL,
                         gender VARCHAR(10) NOT NULL ,
                         age TINYINT UNSIGNED NOT NULL,
-                        college VARCHAR(20) NOT NULL ,
-                        class VARCHAR(15) NOT NULL ,
+                        college VARCHAR(20) NOT NULL ,                      
                         major VARCHAR(50)  NOT NULL ,
+                        class VARCHAR(15) NOT NULL ,
                         PRIMARY KEY (id)
                         )'''
             cursor1.execute(sql1)
