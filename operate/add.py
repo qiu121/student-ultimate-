@@ -3,7 +3,6 @@ from tkinter import messagebox
 from tkinter.ttk import Combobox
 # from tkinter.ttk import Treeview
 from database import *
-from operate.update import *
 
 
 class Add:

@@ -78,8 +78,140 @@ class Database:
         finally:
             db1.close()
 
-    def update(self):
-        pass
+    def update_id(self, *data):
+        """更新学号数据"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_id = '''UPDATE student SET id = %s where id = %s'''
+        try:
+            cursor.execute(update_id, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
+
+    def update_name(self, *data):
+        """更新姓名数据"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_name = '''UPDATE student SET name = %s where id = %s'''
+        try:
+            cursor.execute(update_name, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
+
+    def update_gender(self, *data):
+        """更新性别"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_name = '''UPDATE student SET gender = %s where id = %s'''
+        try:
+            cursor.execute(update_name, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
+
+    def update_age(self, *data):
+        """更新年龄"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_age = '''UPDATE student SET age = %s where id = %s'''
+        try:
+            cursor.execute(update_age, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
+
+    def update_college(self, *data):
+        """更新学院"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_college = '''UPDATE student SET college = %s where id = %s'''
+        try:
+            cursor.execute(update_college, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
+
+    def update_major(self, *data):
+        """更新专业"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_major = '''UPDATE student SET major = %s where id = %s'''
+        try:
+            cursor.execute(update_major, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
+
+    def update_class(self, *data):
+        """更新班级"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_class = '''UPDATE student SET class = %s where id = %s'''
+        try:
+            cursor.execute(update_class, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
+
+    def update_all(self, *data):
+        """更新全部"""
+        conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
+                               charset='utf8')
+        cursor = conn.cursor()
+        update_name = '''UPDATE student SET id=%s,
+                                            name = %s,
+                                            gender=%s,
+                                            age = %s, 
+                                            college = %s,
+                                            major = %s,
+                                            class = %s
+                                            where id = %s'''
+        try:
+            cursor.execute(update_name, data)
+            conn.commit()
+            messagebox.showinfo('提示', '修改成功')
+        except Exception as e:
+            conn.rollback()
+            messagebox.showerror('错误', '修改失败\n' + str(e))
+        finally:
+            conn.close()
 
     def query_all(self):
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',

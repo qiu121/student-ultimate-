@@ -41,7 +41,7 @@ class Delete:
         self.table.column('专业', width=100, minwidth=100, anchor='center')
         self.table.column('班级', width=180, minwidth=180, anchor='center')
         # 设置表头
-        self.table.heading('学号', text='学号', command=lambda: messagebox.showinfo('提示', '学号'))
+        self.table.heading('学号', text='学号')
         self.table.heading('姓名', text='姓名')
         self.table.heading('性别', text='性别')
         self.table.heading('年龄', text='年龄')
@@ -56,7 +56,7 @@ class Delete:
         self.table.place(x=10, y=80, width=700)
         # self.table.delete(*table.get_children())  # 清空表格
 
-        Button(self.frame, text='显示所有', width=10, height=1, command=self.show_all) \
+        Button(self.frame, text='刷新显示', width=10, height=1, command=self.show_all) \
             .place(x=760, y=130, width=100, height=40)
         # 将删除按钮写为类方法,便于在其他类中调用
         self.btn_del = Button(self.frame, text='点击删除', width=10, height=1, command=self.delete_id)
@@ -64,6 +64,7 @@ class Delete:
 
         Button(self.frame, text='退出', width=10, height=1, command=self.window.quit) \
             .place(x=760, y=310, width=100, height=40)
+        self.show_all() # 显示所有学生信息
 
     def show_all(self):
         # 查询全部学生信息
