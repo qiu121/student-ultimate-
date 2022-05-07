@@ -12,6 +12,7 @@ class Delete:
         self.window.geometry('1000x600')
         self.window.title('删除学生信息')
         self.window.config(bg='#F0F0F0')
+        self.window.resizable(False, False)
         self.frame = Frame(self.window, width=900, height=550, bg='#F0F0F0')
         self.frame.pack()
 

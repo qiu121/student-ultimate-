@@ -10,6 +10,7 @@ class Query:
         self.window = Tk()
         super().__init__()
         self.window.geometry('1000x600')
+        self.window.resizable(False, False)
         self.window.title('查询学生信息')
         self.window.config(bg='#F0F0F0')
         self.frame3 = Frame(self.window, width=900, height=550, bg='#F0F0F0')
@@ -158,7 +159,7 @@ class Query:
         # 如果输入不为空，则判断是否查有此数据
         else:
             # 查询为空时，将父窗口的查询button状态改为可用
-            data = con1.query_name_exact(info)  # DataBase类中的query_id_exact方法,返回一条查询结果，以元组的形式返回
+            data = con1.query_name_exact(info)  # DataBase类中的query_name_exact方法,返回一条查询结果，以元组的形式返回
             # if not data:  # 查询为空，返回False
             #     self.btn_id["state"] = NORMAL
             if data:  # 查询成功,将查询到的数据显示在界面

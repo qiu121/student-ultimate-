@@ -71,15 +71,12 @@ class Database:
         # 学号为唯一，不能重复添加
         except pymysql.err.IntegrityError as e:
             db1.rollback()
-            messagebox.showerror('警告', '学号已存在\n' + str(e))
+            messagebox.showerror('添加失败', '学号已存在\n' + str(e))
         except Exception as e:
             db1.rollback()
             messagebox.showerror('警告', '添加失败\n' + str(e))
         finally:
             db1.close()
-
-    def delete(self):
-        pass
 
     def update(self):
         pass
