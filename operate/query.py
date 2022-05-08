@@ -21,6 +21,8 @@ class Query:
         """查询窗口"""
         Label(self.frame3, text='查询学生信息', font=('隶书', 20), bg='white',
               justify=CENTER).place(x=240, y=30, width=300, height=30)
+        Label(self.frame3, text='(查询所有按钮可重置按钮状态)', font=('仿宋', 12),
+              justify=CENTER).place(x=550, y=30, width=220, height=30)
 
         columns = ['学号', '姓名', '性别', '年龄', '学院', '班级', '专业']
         self.table = Treeview(self.frame3, height=20, columns=columns,
@@ -61,7 +63,7 @@ class Query:
         self.btn_name.place(x=760, y=310, width=100, height=40)
         Button(self.frame3, text='退出', width=10, height=1, command=self.window.quit) \
             .place(x=760, y=400, width=100, height=40)
-        self.query_all() # 初始化查询所有
+        self.query_all()  # 初始化查询所有
 
     def query_all(self):
         # 查询全部学生信息
@@ -121,16 +123,19 @@ class Query:
         self.window.configure(background='white')
         self.frame4 = Frame(self.window, bg='#F0F0F0')
         self.frame4.place(x=0, y=0, width=800, height=500)
+
         # 创建查询窗口的标题
         Label(self.frame4, text='姓名查询', font=('仿宋', 20), bg='#F0F0F0').place(x=250, y=10)
         Label(self.frame4, text='请输入姓名', font=('微软雅黑', 12), bg='#F0F0F0').place(x=100, y=80)
+
         # 创建查询窗口的输入框
         self.entry_name = Entry(self.frame4, font=('微软雅黑', 12), width=20)
         self.entry_name.place(x=230, y=80)
-        # 创建查询窗口的查询按钮
 
+        # 创建查询窗口的查询按钮
         Button(self.frame4, text='查询', width=10, height=1, command=self.query_exact_name) \
             .place(x=250, y=200, width=100, height=40)
+
         # 创建查询窗口的重置按钮
         Button(self.frame4, text='重置', width=10, height=1,
                command=lambda: self.entry_name.delete(0, END)) \
@@ -138,7 +143,6 @@ class Query:
         self.window.mainloop()
 
     def query_exact_name(self):
-        pass
         """精准查询学生信息"""
         # 获取输入的姓名
         self.entry_name.focus()
@@ -165,8 +169,8 @@ class Query:
             #     self.btn_id["state"] = NORMAL
             if data:  # 查询成功,将查询到的数据显示在界面
                 # 每次操作前先清空表格
-                self.window.destroy()
-                self.btn_id["state"] = NORMAL
+                self.window.destroy()  # 查询成功即退出窗口
+                self.btn_name["state"] = NORMAL
                 self.table.delete(*self.table.get_children())
                 self.table.insert('', 'end', values=data)
 
@@ -228,5 +232,6 @@ class Query:
                 self.window.destroy()
                 self.btn_id["state"] = NORMAL
                 self.table.delete(*self.table.get_children())
+                # 得到的是二维元组，一个元组元素就是一条学生信息
                 for i in range(num):
                     self.table.insert('', 'end', values=data[i])

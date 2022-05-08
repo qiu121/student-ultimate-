@@ -26,11 +26,12 @@ class Database:
         # 初步连接数据库,创建新的数据库
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, charset='utf8')
         cursor = db.cursor()
+        # 创建新的数据库，如果不存在
         sql = "CREATE DATABASE IF NOT EXISTS studb"
         cursor.execute(sql)
         db.close()
 
-        # 数据库二次连接
+        # 数据库二次连接，创建新的表存储学生信息,如果表已存在，则不创建
         db1 = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                               charset='utf8')
         cursor1 = db1.cursor()
@@ -43,13 +44,13 @@ class Database:
                         college VARCHAR(20) NOT NULL ,                      
                         major VARCHAR(50)  NOT NULL ,
                         class VARCHAR(15) NOT NULL ,
-                        PRIMARY KEY (id)
+                        PRIMARY KEY (id) # 设置学号为主键,唯一存在
                         )'''
             cursor1.execute(sql1)
             db1.commit()
         except Exception as e:
             db1.rollback()
-            messagebox.showerror('错误', '数据表创建失败')
+            messagebox.showerror('错误', '数据表创建失败\n' + str(e))
         finally:
             db1.close()
 
@@ -239,7 +240,7 @@ class Database:
         data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
         if not data:
-            messagebox.showwarning('提示', '没有查询到数据')
+            messagebox.showinfo('提示', '没有查询到数据')
         else:
             messagebox.showinfo('提示', '查询成功')
         db.close()
@@ -255,7 +256,7 @@ class Database:
         data = cursor.fetchall()  # 查询到的数据为空，返回空元组，值为False
         cursor.close()
         if not data:
-            messagebox.showwarning('提示', '没有查询到数据')
+            messagebox.showinfo('提示', '没有查询到数据')
         else:
             messagebox.showinfo('查询成功', '查询到 ' + str(num) + ' 条数据')
         db.close()
@@ -270,7 +271,7 @@ class Database:
         data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
         if not data:
-            messagebox.showwarning('提示', '没有查询到数据')
+            messagebox.showinfo('提示', '没有查询到数据')
         else:
             messagebox.showinfo('查询成功', '查询到' + str(n) + '条数据')
         db.close()

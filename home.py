@@ -3,6 +3,7 @@ from operate.add import *
 from operate.delete import *
 from operate.update import *
 from operate.query import *
+# 导入自定义的模块,实现主界面的功能(增删改查)
 
 
 class Home:
@@ -10,7 +11,7 @@ class Home:
         self.window = master
         self.window.title('学生信息管理系统主界面')
         self.window.geometry('800x500+500+200')
-        self.window.resizable(False, False)
+        self.window.resizable(False, False) # 禁止改变窗口大小
         self.frame2 = Frame(self.window, width=800, height=500, bg='#F0F0F0')
         self.frame2.pack(fill=BOTH, expand=1)
         self.main_page()
@@ -29,8 +30,9 @@ class Home:
 
     def btn_click(self, event):
         """按钮点击事件"""
+        # 调用模块中的类，实现功能
         if event.widget['text'] == '添加学生信息':
-            self.frame2.destroy()
+            self.frame2.destroy() # 必须销毁主界面,否则会出现重叠,甚至出现无法获取添加界面的数据(未解决)
             Add(self.window)
             # add.add_window()
         elif event.widget['text'] == '查询学生信息':

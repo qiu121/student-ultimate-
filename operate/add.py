@@ -9,7 +9,7 @@ class Add:
     def __init__(self, master=None):
         self.window = master
         # self.window = Tk()
-        super().__init__()
+        super().__init__()  # 调用父类的构造方法(不过这里不是必须的,好像没有什么用)
         self.window.geometry('800x600')
         self.window.title('添加学生信息')
         self.window.config(bg='#F0F0F0')
@@ -27,6 +27,7 @@ class Add:
         # 创建标签,显示文字标题
         add_title = ['学号', '姓名', '性别', '年龄', '学院', '专业', '班级']
         add_college = ['新能源车辆学院', '商务贸易学院', '财富管理学院', '人工智能学院', '人居环境学院', '传媒设计学院', '马克思主义学院', '体育学院', '教育学院']
+        # 专业较多，暂时先不写,这里只写了本科专业
         add_major = [
             ['机械设计制造及其自动化', '材料成型及控制工程', '机械电子工程(工业机器人)', '智能制造工程', '车辆工程', '汽车服务工程'],
             ['人力资源管理', '国际经济与贸易', '市场营销', '电子商务', '物流工程'],
@@ -38,7 +39,9 @@ class Add:
             ['社会体育指导与管理', '社会体育指导与管理(足球教师)'],
             ['学前教育(幼儿教师)', '秘书学', '小学教育(教师教育)', '家政学', '数学与应用数学(教师教育)', '英语(教师教育)', '汉语言文学(教师教育)']
         ]
+        # 定义为全局变量,免于使用self方法，又臭又长
         global major_dirt, major_keys
+        # 字典一一对应,使输入的学院与专业相关联，并且是单相关，即专业不能相关联学院
         major_dirt = {
             add_college[0]: add_major[0],
             add_college[1]: add_major[1],
@@ -50,10 +53,12 @@ class Add:
             add_college[7]: add_major[7],
             add_college[8]: add_major[8],
         }
+        # 定义变量获取字典的键(即学院的值)
         major_keys = list(major_dirt.keys())
+        # 定义列表获取获取输入的学生信息，列表元素为String()变量
         self.get = [StringVar(), StringVar(), StringVar(), StringVar(), StringVar(), StringVar(), StringVar()]
         global entry
-        entry = [0, 0, 0, 0, 0, 0, 0]
+        entry = [0, 0, 0, 0, 0, 0, 0] # 指定一定长度的空列表，初始化Entry个数
         for i in range(7):
             Label(self.frame, text=add_title[i], font=('隶书', 15),
                   justify=CENTER).place(x=260, y=100 + i * 50, width=100, height=30)
@@ -64,7 +69,7 @@ class Add:
                 Radiobutton(self.frame, text='女', variable=self.get[i], value='女',
                             font=('隶书', 15), justify=CENTER).place(x=450, y=100 + i * 50, width=50, height=30)
                 # self.get[i].set('男')
-                self.get[2].set(' ')  # 性别,默认设置为一个空格，表示预选为空格
+                self.get[2].set(' ')  # 性别,默认设置为一个空格，表示预选为空格！！！！！！！！！！！！！！！！！！
 
             # 创建年龄Spinbox控件，指定输入范围
             elif i == 3:
@@ -83,7 +88,6 @@ class Add:
                 # self.add_college_combobox.current(0)
                 # print(self.get[i].get())
                 # 将学院事件与专业事件绑定
-                # 匿名函数关联
                 self.add_college_combobox.bind("<<ComboboxSelected>>", self.college_major)
             # 创建专业Combobox下拉列表,与学院相关联
             elif i == 5:
@@ -101,11 +105,11 @@ class Add:
                 entry[i].place(x=350, y=100 + i * 50, width=160, height=30)
                 self.get[i].set('')  # 初始化为空
         entry[0].focus()  # 设置默认焦点
-        # 创建按钮
+        # 创建添加按钮
         self.btn_add = Button(self.frame, text='添加', width=15, height=1, cursor='hand2', font=('黑体', 14))
         self.btn_add.place(x=300, y=450, width=200, height=40)
         self.btn_add.bind('<Button-1>', self.add_click)
-        # 匿名函数,重置输入框
+        # 匿名函数,重置输入框,性别为特殊处理！！！！！！！！！！！
         self.btn_reset = Button(self.frame, text='重置', width=15, height=1, cursor='hand2', font=('黑体', 14),
                                 command=lambda: [self.get[k].set(' ') if k == 2
                                                  else self.get[k].set('') for k in range(7)] + [entry[0].focus()])
@@ -134,12 +138,12 @@ class Add:
                     messagebox.showwarning('提示', temp[i])
                     return
                 else:
-                    # 判断学号输入是否为有效位11位(2020级)或者10位，且为数字
+                    # 判断学号输入是否为有效位11位(2020级)或者10位(2020级以前？)，且为数字
                     if len(self.get[i].get()) not in (10, 11) or not self.get[i].get().isdigit():
                         messagebox.showwarning('提示', '学号格式错误！')
                         return
             else:
-                # 判断性别输入框是否为空
+                # 判断性别输入框是否为空！！！！！！！！！！！！！！！！！！！性别特别处理
                 if self.get[i].get() == ' ':
                     messagebox.showwarning('提示', temp[i])
                     return
@@ -148,7 +152,7 @@ class Add:
                     messagebox.showwarning('提示', temp[i])
                     return
 
-        # 将数据导入数据库
+        # 读取配置文件，获取数据库连接信息
         with open('config.ini', 'r') as f:
             db_info = f.readlines()
         db_info = [i.strip() for i in db_info]
@@ -158,14 +162,13 @@ class Add:
                        db_info[2],
                        db_info[3],
                        )
-        # 调用DataBase对象实例的add_student方法,插入数据
+        # 调用DataBase对象实例的insert方法,插入数据
         con.insert(self.get[0].get(), self.get[1].get(), self.get[2].get(), self.get[3].get(),
                    self.get[4].get(), self.get[5].get(), self.get[6].get())
-        self.frame.destroy()
+        # self.frame.destroy()
         # # 弹窗提问确认下一步操作
         # if messagebox.askyesno('提示', '是否继续添加？'):
         #     [self.get[i].set(' ') if i == 2 else self.get[i].set('') for i in range(7)]  # 将输入框内容清空
         #     entry[0].focus()  # 设置默认焦点
         # else:
         #     self.window.destroy()  # 销毁窗口
-

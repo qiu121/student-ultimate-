@@ -26,6 +26,7 @@ class Delete:
               justify=CENTER).place(x=550, y=30, width=200, height=30)
 
         columns = ['学号', '姓名', '性别', '年龄', '学院', '班级', '专业']
+        # 创建表格
         self.table = Treeview(self.frame, height=20, columns=columns,
                               selectmode='browse',
                               show='headings',
@@ -102,6 +103,10 @@ class Delete:
                         db_info[2],
                         db_info[3],
                         )
+        # 判断是否选中行
+        if len(self.table.selection()) == 0:
+            messagebox.showwarning('警告', '请选择要删除的学生信息')
+            return
         # 获取所选行的学号
         for item in self.table.selection():
             item_text = self.table.item(item, "values")

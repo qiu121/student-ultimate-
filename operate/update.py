@@ -4,6 +4,7 @@ from tkinter.ttk import Treeview
 from tkinter.ttk import Combobox
 from database import *
 import tkinter.simpledialog as simpledialog
+# 简单的对话框，用于获取用户输入
 
 
 class Update:
@@ -139,6 +140,7 @@ class Update:
                                        parent=self.window,
                                        )
         # print(result)
+        # 判断是否输入了新的学号，如果没有输入，则不修改
         if result:
             with open('config.ini', 'r') as f:
                 db_info = f.readlines()
@@ -149,11 +151,9 @@ class Update:
                             db_info[2],
                             db_info[3],
                             )
-            try:
-                conn.update_id(result, item_text[0]) # 修改学号
-                self.show_all() # 显示修改后的信息
-            except Exception as e:
-                pass
+            # 调用数据库类Database的update_id方法，修改学号
+            conn.update_id(result, self.id) # 修改学号
+            self.show_all() # 显示修改后的信息
 
 
     def update_name(self):
@@ -177,7 +177,7 @@ class Update:
 
     def update_gender(self):
         # 修改性别
-        result = simpledialog.askstring('修改年龄', '请输入新的年龄',
+        result = simpledialog.askstring('修改性别', '请输入新的性别',
                                         initialvalue=self.gender,
                                         parent=self.window,
                                         )
@@ -280,7 +280,7 @@ class Update:
         text2=['学号','姓名','性别','年龄','学院','专业','班级']
         result=[0]*7
         for i in range(7):
-            result[i]=simpledialog.askstring('修改全部', '请输入新的'+text2[i],
+            result[i]=simpledialog.askstring('修改个人信息', '请输入新的'+text2[i],
                                            initialvalue=text[i],
                                            parent=self.window,
                                            )
