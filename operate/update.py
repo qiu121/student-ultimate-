@@ -89,37 +89,51 @@ class Update:
         self.frame4 = Frame(self.window, bg='#F0F0F0')
         self.frame4.place(x=0, y=0, width=800, height=500)
 
-        # 添加两行按钮
-        Button(self.frame4, text='修改学号', width=10, height=1,command=self.update_id) \
-            .place(x=180, y=80, width=100, height=40)
-        Button(self.frame4, text='修改姓名', width=10, height=1,command=self.update_name) \
-            .place(x=180, y=180, width=100, height=40)
-        Button(self.frame4, text='修改性别', width=10, height=1,command=self.update_gender) \
-            .place(x=180, y=280, width=100, height=40)
-        Button(self.frame4, text='修改年龄', width=10, height=1,command=self.update_age) \
-            .place(x=320, y=80, width=100, height=40)
-        Button(self.frame4, text='修改学院', width=10, height=1,command=self.update_college) \
-            .place(x=320, y=180, width=100, height=40)
-        Button(self.frame4, text='修改班级', width=10, height=1,command=self.update_class) \
-            .place(x=320, y=280, width=100, height=40)
-        Button(self.frame4, text='全部修改', width=10, height=1,command=self.update_all) \
-            .place(x=180, y=380, width=240, height=40)
+        # 添加四行按钮，每行两个按钮
+        text=['修改学号','修改姓名','修改性别','修改年龄','修改学院','修改专业','修改班级','全部修改']
+        for i in range(4):
+            for j in range(2):
+                self.btn_uptate=Button(self.frame4, text=text[i*2+j], width=10, height=1)
+                self.btn_uptate.place(x=180+j*140, y=80+i*100, width=100, height=40)
+                # 点击修改按钮前，先判断是否选中行
+                self.btn_uptate.bind('<Button-1>', self.update_click)
 
-        # 获取所选择的行的学生信息
-        for item in self.table.selection():
-            item_text = self.table.item(item, "values")
-            # print(item_text)  # 输出所选行的第一列的值
-            self.id = item_text[0]
-            self.name = item_text[1]
-            self.gender=item_text[2]
-            self.age=item_text[3]
-            self.college=item_text[4]
-            self.major=item_text[5]
-            self.class_=item_text[6]
-            # self.all_=item_text
+    def update_click(self,event):
+        # 判断是否选中表格中的某一行
+        if self.table.selection():
+            # 获取选中行的行号
+            row = self.table.selection()[0]
+            # 获取选中行的学号,姓名,性别,年龄,学院,专业,班级,为后续修改提供预选信息
+            self.id = self.table.item(row, 'values')[0]
+            self.name = self.table.item(row, 'values')[1]
+            self.gender = self.table.item(row, 'values')[2]
+            self.age = self.table.item(row, 'values')[3]
+            self.college = self.table.item(row, 'values')[4]
+            self.major = self.table.item(row, 'values')[5]
+            self.class_ = self.table.item(row, 'values')[6]
+            if event.widget.cget('text') == '修改学号':
+                self.update_id()
+            elif event.widget.cget('text') == '修改姓名':
+                self.update_name()
+            elif event.widget.cget('text') == '修改性别':
+                self.update_gender()
+            elif event.widget.cget('text') == '修改年龄':
+                self.update_age()
+            elif event.widget.cget('text') == '修改学院':
+                self.update_college()
+            elif event.widget.cget('text') == '修改专业':
+                self.update_major()
+            elif event.widget.cget('text') == '修改班级':
+                self.update_class()
+            elif event.widget.cget('text') == '全部修改':
+                self.update_all()
+        else:
+            messagebox.showinfo('提示', '请选中表格中的一行')
+
 
     def update_id(self):
-        # 修改学号,设置为获取字符串类型，并且设置长度为10
+        # 修改学号,设置为获取字符串类型
+        # 获取所选择的行的学生信息
         result=simpledialog.askstring('修改学号', '请输入新的学号',
                                        initialvalue=self.id,
                                        parent=self.window,
@@ -135,8 +149,12 @@ class Update:
                             db_info[2],
                             db_info[3],
                             )
-            conn.update_id(result, self.id) # 修改学号
-            self.show_all()
+            try:
+                conn.update_id(result, item_text[0]) # 修改学号
+                self.show_all() # 显示修改后的信息
+            except Exception as e:
+                pass
+
 
     def update_name(self):
         # 修改姓名
