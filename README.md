@@ -2,7 +2,7 @@
 ## a student management system with tkinter for interface and with mysql-DBMS to store student information and manage student information   
 ## 开发环境(IDE)
 - PyCharm Professional Edition 2021.3、  
-	Navicant 16  
+	Navicat 16  
 - Python_version: 3.10.4  
     OS_version: Windows 10  
     mysql_version:8.0.28  
