@@ -10,81 +10,22 @@ import tkinter.simpledialog as simpledialog
 class Update:
     def __init__(self, master):
         self.window = master
-        self.window = Tk()
         super().__init__()
-        self.window.geometry('1000x600')
-        self.window.resizable(False, False)
-        self.window.title('修改学生信息')
-        self.window.config(bg='#F0F0F0')
-        self.frame3 = Frame(self.window, width=900, height=550, bg='#F0F0F0')
-        self.frame3.pack()
-        self.update_window()
+        self.update_info()
 
-    def update_window(self):
-        """更新学生信息"""
-        Label(self.frame3, text='修改学生信息', font=('隶书', 20), bg='white',
-              justify=CENTER).place(x=240, y=30, width=300, height=30)
+    # def update_window(self):
+    #     """更新学生信息"""
 
-        columns = ['学号', '姓名', '性别', '年龄', '学院', '班级', '专业']
-        self.table = Treeview(self.frame3, height=20, columns=columns,
-                              selectmode='browse',
-                              show='headings',
-                              displaycolumns=columns,
-                              )
 
-        # 定义各列宽度和对齐方式
-        self.table.column('学号', width=110, minwidth=110, anchor='center')
-        self.table.column('姓名', width=100, minwidth=100, anchor='center')
-        self.table.column('性别', width=50, minwidth=50, anchor='center')
-        self.table.column('年龄', width=50, minwidth=50, anchor='center')
-        self.table.column('学院', width=110, minwidth=110, anchor='center')
-        self.table.column('专业', width=100, minwidth=100, anchor='center')
-        self.table.column('班级', width=180, minwidth=180, anchor='center')
-        # 设置表头
-        self.table.heading('学号', text='学号')
-        self.table.heading('姓名', text='姓名')
-        self.table.heading('性别', text='性别')
-        self.table.heading('年龄', text='年龄')
-        self.table.heading('学院', text='学院')
-        self.table.heading('专业', text='班级')
-        self.table.heading('班级', text='专业')
-        # 给表格加上竖向滚动条,并且设置滚动条的宽度
-        vbar = Scrollbar(self.frame3, orient=VERTICAL, command=self.table.yview)
-        vbar.place(x=890, y=60, height=480)
-        self.table.configure(yscrollcommand=vbar.set)
-        self.table.place(x=10, y=80, width=700)
-
-        Button(self.frame3, text='刷新显示', width=10, height=1,command=self.show_all) \
-            .place(x=760, y=100, width=100, height=40)
-        # 将查询按钮写为类方法,便于在其他类中调用
-        self.btn_name = Button(self.frame3, text='点击修改', width=10, height=1,command=self.update_info)
-        self.btn_name.place(x=760, y=190, width=100, height=40)
-        self.btn_name = Button(self.frame3, text='退出', width=10, height=1,command=self.window.quit)
-        self.btn_name.place(x=760, y=280, width=100, height=40)
-        self.show_all() # 初始化查询所有学生信息
-
-    def show_all(self):
-        # 查询全部学生信息
-        with open('config.ini', 'r') as f:
-            db_info = f.readlines()
-        db_info = [i.strip() for i in db_info]
-        # 连接数据库,创建DataBase对象实例
-        conn = Database(db_info[0],
-                        int(db_info[1]),
-                        db_info[2],
-                        db_info[3],
-                        )
-        data = conn.query_all()  # DataBase类中的query_all方法,返回查询结果，以二维元组的形式返回
-        # 将查询结果插入表格,以显示在表格中,每次操作前先清空表格
-        self.table.delete(*self.table.get_children())
-        for i in data:
-            self.table.insert('', 'end', values=i)
 
     def update_info(self):
         # 修改学生信息
         self.window=Tk()
         self.window.title('修改学生信息')
-        self.window.geometry('600x500')
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
+        self.window.geometry('%dx%d+%d+%d' % (600, 500, screen_width / 2 - 300, screen_height / 2 - 250))
+        # self.window.geometry('600x500')
         self.window.resizable(False, False)
         self.window.configure(background='white')
         self.frame4 = Frame(self.window, bg='#F0F0F0')
@@ -142,15 +83,8 @@ class Update:
         # print(result)
         # 判断是否输入了新的学号，如果没有输入，则不修改
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             # 调用数据库类Database的update_id方法，修改学号
             conn.update_id(result, self.id) # 修改学号
             self.show_all() # 显示修改后的信息
@@ -163,15 +97,8 @@ class Update:
                                        parent=self.window,
                                        )
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             conn.update_name(result, self.id) # 修改姓名
             self.show_all()
 
@@ -182,15 +109,8 @@ class Update:
                                         parent=self.window,
                                         )
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             # 获取选中的行，并获取其中的学号作为查询条件
             conn.update_age(result, self.id)  # 修改年龄
             self.show_all()
@@ -202,15 +122,8 @@ class Update:
                                        parent=self.window,
                                        )
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             # 获取选中的行，并获取其中的学号作为查询条件
             conn.update_age(result, self.id) # 修改年龄
             self.show_all()
@@ -222,15 +135,8 @@ class Update:
                                        parent=self.window,
                                        )
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             # 获取选中的行，并获取其中的学号作为查询条件
             conn.update_college(result, self.id) # 修改学院
             self.show_all()
@@ -242,15 +148,8 @@ class Update:
                                        parent=self.window,
                                        )
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             # 获取选中的行，并获取其中的学号作为查询条件
             conn.update_major(result, self.id) # 修改专业
             self.show_all()
@@ -262,15 +161,8 @@ class Update:
                                        parent=self.window,
                                        )
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             conn.update_class(result, self.id) # 修改班级
             self.show_all()
 
@@ -285,15 +177,8 @@ class Update:
                                            parent=self.window,
                                            )
         if result:
-            with open('config.ini', 'r') as f:
-                db_info = f.readlines()
-            db_info = [i.strip() for i in db_info]
             # 连接数据库,创建DataBase对象实例
-            conn = Database(db_info[0],
-                            int(db_info[1]),
-                            db_info[2],
-                            db_info[3],
-                            )
+            conn = Database()
             conn.update_all(result[0],result[1],result[2],result[3],result[4],result[5],result[6],self.id) # 修改全部
             self.show_all()
 

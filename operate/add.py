@@ -10,16 +10,13 @@ class Add:
         self.window = master
         # self.window = Tk()
         super().__init__()  # 调用父类的构造方法(不过这里不是必须的,好像没有什么用)
-        self.window.geometry('800x600')
-        self.window.title('添加学生信息')
-        self.window.config(bg='#F0F0F0')
-        self.window.resizable(False, False)
 
         self.add_window()
 
     def add_window(self):
         """添加窗口"""
         # 创建标签,显示文字标题
+        # self.window=Tk()
         self.frame = Frame(self.window, width=900, height=550, bg='#F0F0F0')
         self.frame.pack()
         Label(self.frame, text='添加学生信息', font=('隶书', 20),

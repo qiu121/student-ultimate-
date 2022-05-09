@@ -2,23 +2,15 @@ import pymysql
 from tkinter import messagebox
 
 
-# with open('config.ini', 'r') as f:
-#     data = f.readlines()  # 读取文件中的所有行,返回字符串列表
-#     host = data[0].strip()  # 字符串方法, 去掉每行的首尾空格
-#     port = int(data[1].strip())
-#     user = data[2].strip()
-#     pwd = data[3].strip()
-# print("============test===========")
-# print(host, port, user, pwd, sep='\n')
-# print("============test===========")
-#
-
 class Database:
-    def __init__(self, host, port, user, pwd):
-        self.host = host
-        self.port = port
-        self.user = user
-        self.pwd = pwd
+
+    def __init__(self):
+        with open('config.ini', 'r') as f:
+            data = f.readlines()  # 读取文件中的所有行,返回字符串列表
+            self.host = data[0].strip()  # 字符串方法, 去掉每行的首尾空格
+            self.port = int(data[1].strip())
+            self.user = data[2].strip()
+            self.pwd = data[3].strip()
         self.connect()
 
     def connect(self):
@@ -218,7 +210,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_all = '''SELECT * FROM student'''
+        sql_all = '''SELECT * FROM student ORDER BY id DESC '''  # 查询全部，按照id升序
         n = cursor.execute(sql_all)  # 返回查询到的数据条数
         data = cursor.fetchall()  # 查询到的数据为空，返回空元组，值为False
         cursor.close()
@@ -294,6 +286,6 @@ class Database:
 
 if __name__ == '__main__':
     # 测试
-    con = Database('localhost', 3306, 'root', 'qiu18279664933')
+    con = Database()
     # con.insert(0, '张三', '男', 18, '计算机学院', '计算机1801', '计算机科学与技术')
     con.query_id_regexp(20)

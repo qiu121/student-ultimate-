@@ -107,12 +107,12 @@ class Login:
                 cursor = db.cursor()
                 cursor.execute("SELECT VERSION()")
                 # 调用自定义数据库操作模块中的DataBase类,
-                init = Database(host, int(port), user, pwd)
+                init = Database()
                 init.connect()  # 实例化一个对象,调用connect方法,连接数据库,并创建新的数据库、数据表
                 # 获取执行结果
                 data = cursor.fetchone()
                 # send()  # 调用自定义模块的send函数，发送数据
-                # os.remove('config.ini')  # 删除生成的配置文件
+                # os.remove('config.ini')  # 删ta除生成的配置文件
 
                 messagebox.showinfo('提示', '数据库连接成功\n数据库版本：%s' % data)
                 self.frame1.destroy()  # 销毁窗口

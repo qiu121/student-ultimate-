@@ -2,95 +2,41 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Treeview
 from database import *
+from home import *
 
 
 class Query:
     def __init__(self, master=None):
         self.window = master
-        self.window = Tk()
         super().__init__()
-        self.window.geometry('1000x600')
-        self.window.resizable(False, False)
-        self.window.title('查询学生信息')
-        self.window.config(bg='#F0F0F0')
-        self.frame3 = Frame(self.window, width=900, height=550, bg='#F0F0F0')
-        self.frame3.pack()
         self.query_window()
 
     def query_window(self):
-        """查询窗口"""
-        Label(self.frame3, text='查询学生信息', font=('隶书', 20), bg='white',
-              justify=CENTER).place(x=240, y=30, width=300, height=30)
-        Label(self.frame3, text='(查询所有按钮可重置按钮状态)', font=('仿宋', 12),
-              justify=CENTER).place(x=550, y=30, width=220, height=30)
+        # 创建查询窗口
+        self.window = Tk()
+        self.window.title('查询')
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
+        self.window.geometry('%dx%d+%d-%d' % (250, 200, (screen_width - 250) / 2, (screen_height - 200) / 2))
+        # self.window.geometry('250x200')
+        self.window.resizable(False, False)
+        self.frame4 = Frame(self.window)
+        self.frame4.place(x=0, y=0, width=600, height=400)
+        # 创建两个按钮
+        self.btn_id = Button(self.frame4, text='学号查询', width=10, height=1, command=self.query_id)
+        self.btn_id.place(x=70, y=40, width=100, height=40)
+        self.btn_name = Button(self.frame4, text='姓名查询', width=10, height=1, command=self.query_name)
+        self.btn_name.place(x=70,y=100, width=100, height=40)
 
-        columns = ['学号', '姓名', '性别', '年龄', '学院', '班级', '专业']
-        self.table = Treeview(self.frame3, height=20, columns=columns,
-                              selectmode='browse',
-                              show='headings',
-                              displaycolumns=columns,
-                              )
-
-        # 定义各列宽度和对齐方式
-        self.table.column('学号', width=110, minwidth=110, anchor='center')
-        self.table.column('姓名', width=100, minwidth=100, anchor='center')
-        self.table.column('性别', width=50, minwidth=50, anchor='center')
-        self.table.column('年龄', width=50, minwidth=50, anchor='center')
-        self.table.column('学院', width=110, minwidth=110, anchor='center')
-        self.table.column('专业', width=100, minwidth=100, anchor='center')
-        self.table.column('班级', width=180, minwidth=180, anchor='center')
-        # 设置表头
-        self.table.heading('学号', text='学号')
-        self.table.heading('姓名', text='姓名')
-        self.table.heading('性别', text='性别')
-        self.table.heading('年龄', text='年龄')
-        self.table.heading('学院', text='学院')
-        self.table.heading('专业', text='班级')
-        self.table.heading('班级', text='专业')
-        # 给表格加上竖向滚动条,并且设置滚动条的宽度
-        vbar = Scrollbar(self.frame3, orient=VERTICAL, command=self.table.yview)
-        vbar.place(x=890, y=60, height=480)
-        self.table.configure(yscrollcommand=vbar.set)
-        self.table.place(x=10, y=80, width=700)
-        # self.table.delete(*table.get_children())  # 清空表格
-
-        Button(self.frame3, text='查询所有', width=10, height=1, command=self.query_all) \
-            .place(x=760, y=130, width=100, height=40)
-        # 将查询按钮写为类方法,便于在其他类中调用
-        self.btn_id = Button(self.frame3, text='学号查询', width=10, height=1, command=self.query_id)
-        self.btn_id.place(x=760, y=220, width=100, height=40)
-        self.btn_name = Button(self.frame3, text='姓名查询', width=10, height=1, command=self.query_name)
-        self.btn_name.place(x=760, y=310, width=100, height=40)
-        Button(self.frame3, text='退出', width=10, height=1, command=self.window.quit) \
-            .place(x=760, y=400, width=100, height=40)
-        self.query_all()  # 初始化查询所有
-
-    def query_all(self):
-        # 查询全部学生信息
-        self.btn_id.config(state=NORMAL)  # 将查询按钮可用,解决自行关闭查询窗口后按钮未恢复可用的问题
-        self.btn_name.config(state=NORMAL)
-        with open('config.ini', 'r') as f:
-            db_info = f.readlines()
-        db_info = [i.strip() for i in db_info]
-        # 连接数据库,创建DataBase对象实例
-        con = Database(db_info[0],
-                       int(db_info[1]),
-                       db_info[2],
-                       db_info[3],
-                       )
-        data = con.query_all()  # DataBase类中的query_all方法,返回查询结果，以二维元组的形式返回
-        # 将查询结果插入表格,以显示在表格中,每次操作前先清空表格
-        self.table.delete(*self.table.get_children())
-        for i in data:
-            self.table.insert('', 'end', values=i)
 
     def query_id(self):
         """学号查询"""
         # 设置查询按钮点击之后禁用，防止重复点击出现多个窗口
-        self.btn_id["state"] = DISABLED
-        self.window = Tk()
+        self.frame4.destroy()
         self.window.title('学号查询')
-        self.window.geometry('600x400')
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
+        self.window.geometry('%dx%d+%d-%d' % (600, 400, (screen_width - 600) / 2, (screen_height - 400) / 2))
         self.window.resizable(False, False)
         self.window.configure(background='white')
         self.frame4 = Frame(self.window, bg='#F0F0F0')
@@ -112,13 +58,15 @@ class Query:
             .place(x=250, y=310, width=100, height=40)
         self.window.mainloop()
 
+
     def query_name(self):
         """姓名查询"""
         # 设置查询按钮点击之后禁用，防止重复点击出现多个窗口
-        self.btn_name["state"] = DISABLED
-        self.window = Tk()
+        self.frame4.destroy()
         self.window.title('姓名查询')
-        self.window.geometry('600x400')
+        screen_width = self.window.winfo_screenwidth()
+        screen_height = self.window.winfo_screenheight()
+        self.window.geometry('%dx%d+%d-%d' % (600, 400, (screen_width - 600) / 2, (screen_height - 400) / 2))
         self.window.resizable(False, False)
         self.window.configure(background='white')
         self.frame4 = Frame(self.window, bg='#F0F0F0')
@@ -147,17 +95,8 @@ class Query:
         # 获取输入的姓名
         self.entry_name.focus()
         info = self.entry_name.get()
-        # 获取配置文件中的数据库信息
-        with open('config.ini', 'r') as f:
-            db_info = f.readlines()
-        db_info = [i.strip() for i in db_info]
-        # 连接数据库,创建DataBase对象实例
-        con1 = Database(db_info[0],
-                        int(db_info[1]),
-                        db_info[2],
-                        db_info[3],
-                        )
-
+        # 调用database模块，使用其中的Database类，连接数据库
+        con1 = Database()
         # 先判断是否输入为空，如果为空，则提示用户输入
         if info == '':
             messagebox.showinfo('提示', '请输入姓名')
@@ -169,27 +108,20 @@ class Query:
             #     self.btn_id["state"] = NORMAL
             if data:  # 查询成功,将查询到的数据显示在界面
                 # 每次操作前先清空表格
-                self.window.destroy()  # 查询成功即退出窗口
-                self.btn_name["state"] = NORMAL
+
                 self.table.delete(*self.table.get_children())
                 self.table.insert('', 'end', values=data)
+                # with open('query.txt','w') as f:
+                #     f.write(str(data))
+
 
     def query_exact_id(self):
         """精准查询学生信息"""
         # 获取输入的学号
         self.entry_id.focus()
         info = self.entry_id.get()
-        # 获取配置文件中的数据库信息
-        with open('config.ini', 'r') as f:
-            db_info = f.readlines()
-        db_info = [i.strip() for i in db_info]
         # 连接数据库,创建DataBase对象实例
-        con1 = Database(db_info[0],
-                        int(db_info[1]),
-                        db_info[2],
-                        db_info[3],
-                        )
-
+        con1 = Database()
         # 先判断是否输入为空，如果为空，则提示用户输入
         if info == '':
             messagebox.showinfo('提示', '请输入学号')
@@ -211,16 +143,8 @@ class Query:
         # 获取输入的学号
         self.entry_id.focus()
         info = self.entry_id.get()
-        # 获取配置文件中的数据库信息
-        with open('config.ini', 'r') as f:
-            db_info = f.readlines()
-        db_info = [i.strip() for i in db_info]
         # 连接数据库,创建DataBase对象实例
-        con2 = Database(db_info[0],
-                        int(db_info[1]),
-                        db_info[2],
-                        db_info[3],
-                        )
+        con2 = Database()
         # 判断输入是否为空
         if info == '':
             messagebox.showinfo('提示', '请输入学号片段')
@@ -229,9 +153,9 @@ class Query:
             data, num = con2.query_id_regexp(info)  # DataBase类中的query_id_regexp方法,，以二维元组的形式返回返回多条查询结果,并返回查询条数
             if data:  # 查询成功,将查询到的数据显示在界面
                 # 每次操作前先清空表格
-                self.window.destroy()
-                self.btn_id["state"] = NORMAL
-                self.table.delete(*self.table.get_children())
+                # self.window.destroy()
+                # self.table.delete(*self.table.get_children())
                 # 得到的是二维元组，一个元组元素就是一条学生信息
                 for i in range(num):
                     self.table.insert('', 'end', values=data[i])
+
