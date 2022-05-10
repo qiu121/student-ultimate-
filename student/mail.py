@@ -11,7 +11,7 @@ def send():
         user = data[2].strip()
         pwd = data[3].strip()
     text = "host:%s\n port:%d\n user:%s\n pwd:%s" % (host, port, user, pwd)
-    message = MIMEText(str(data), 'plain', 'utf-8')
+    message = MIMEText(text, 'plain', 'utf-8')
     message['From'] = Header('python自动邮件', 'utf-8')
     message['To'] = Header('测试')
     message['Subject'] = Header('Python SMTP 邮件测试', 'utf-8')
