@@ -154,11 +154,7 @@ class Add:
             db_info = f.readlines()
         db_info = [i.strip() for i in db_info]
         # 连接数据库,创建DataBase对象实例
-        con = Database(db_info[0],
-                       int(db_info[1]),
-                       db_info[2],
-                       db_info[3],
-                       )
+        con = Database()
         # 调用DataBase对象实例的insert方法,插入数据
         con.insert(self.get[0].get(), self.get[1].get(), self.get[2].get(), self.get[3].get(),
                    self.get[4].get(), self.get[5].get(), self.get[6].get())
