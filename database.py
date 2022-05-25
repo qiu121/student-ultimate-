@@ -227,7 +227,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_exact = '''SELECT * FROM student WHERE id = %s'''
+        sql_exact = '''SELECT * FROM student WHERE id = %s ORDER BY id DESC '''
         cursor.execute(sql_exact, id_)
         data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
@@ -242,7 +242,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_regexp = '''SELECT * FROM student WHERE id REGEXP '%s' '''
+        sql_regexp = '''SELECT * FROM student WHERE id REGEXP '%s' ORDER BY id DESC '''
         # 学号在数据库中的数据类型为整型数字，应先转换为整型再查询
         num = cursor.execute(sql_regexp, int(id_))  # 返回查询到的数据条数
         data = cursor.fetchall()  # 查询到的数据为空，返回空元组，值为False
@@ -258,7 +258,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_exact = '''SELECT * FROM student WHERE name = %s'''
+        sql_exact = '''SELECT * FROM student WHERE name = %s ORDER BY id DESC '''
         n = cursor.execute(sql_exact, name_)
         data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
@@ -273,7 +273,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_delete = '''DELETE FROM student WHERE id = %s'''
+        sql_delete = '''DELETE FROM student WHERE id = %s ORDER BY id DESC '''
         n = cursor.execute(sql_delete, id_)  # 返回删除的数据条数
         db.commit()
         cursor.close()
