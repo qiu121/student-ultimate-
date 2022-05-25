@@ -149,10 +149,6 @@ class Add:
                     messagebox.showwarning('提示', temp[i])
                     return
 
-        # 读取配置文件，获取数据库连接信息
-        with open('config.ini', 'r') as f:
-            db_info = f.readlines()
-        db_info = [i.strip() for i in db_info]
         # 连接数据库,创建DataBase对象实例
         con = Database()
         # 调用DataBase对象实例的insert方法,插入数据
