@@ -227,7 +227,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_exact = '''SELECT * FROM student WHERE id = %s ORDER BY id DESC '''
+        sql_exact = '''SELECT * FROM student WHERE id = %s'''
         cursor.execute(sql_exact, id_)
         data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
@@ -258,7 +258,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_exact = '''SELECT * FROM student WHERE name = %s ORDER BY id DESC '''
+        sql_exact = '''SELECT * FROM student WHERE name = %s'''
         n = cursor.execute(sql_exact, name_)
         data = cursor.fetchone()  # 查询到的数据为空，返回None
         cursor.close()
@@ -273,7 +273,7 @@ class Database:
         db = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.pwd, db='studb',
                              charset='utf8')
         cursor = db.cursor()
-        sql_delete = '''DELETE FROM student WHERE id = %s ORDER BY id DESC '''
+        sql_delete = '''DELETE FROM student WHERE id = %s'''
         n = cursor.execute(sql_delete, id_)  # 返回删除的数据条数
         db.commit()
         cursor.close()
