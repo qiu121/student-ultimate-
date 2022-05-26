@@ -377,6 +377,7 @@ class Home:
             .place(x=250, y=280, width=100, height=40)
         self.window.mainloop()
 
+
     def query_exact_name(self):
         """精准查询学生信息"""
         # 获取输入的姓名
@@ -395,11 +396,9 @@ class Home:
             #     self.btn_id["state"] = NORMAL
             if data:  # 查询成功,将查询到的数据显示在界面
                 # 每次操作前先清空表格
-
                 self.table.delete(*self.table.get_children())
                 self.table.insert('', 'end', values=data)
-                # with open('query.txt','w') as f:
-                #     f.write(str(data))
+
 
     def query_exact_id(self):
         """精准查询学生信息"""
@@ -419,10 +418,10 @@ class Home:
             #     self.btn_id["state"] = NORMAL
             if data:  # 查询成功,将查询到的数据显示在界面
                 # 每次操作前先清空表格
-                self.window.destroy()
-                self.btn_id["state"] = NORMAL
+                # self.window.destroy()
                 self.table.delete(*self.table.get_children())
                 self.table.insert('', 'end', values=data)
+
 
     def query_regexp_id(self):
         """模糊查询学生信息"""
@@ -438,10 +437,8 @@ class Home:
             # 查询为空时，将父窗口的查询button状态改为可用
             data, num = con2.query_id_regexp(info)  # DataBase类中的query_id_regexp方法,，以二维元组的形式返回返回多条查询结果,并返回查询条数
             if data:  # 查询成功,将查询到的数据显示在界面
-                # 每次操作前先清空表格
-                # self.window.destroy()
-                # self.table.delete(*self.table.get_children())
                 # 得到的是二维元组，一个元组元素就是一条学生信息
                 for i in range(num):
+                    self.table.delete(*self.table.get_children())
                     self.table.insert('', 'end', values=data[i])
 

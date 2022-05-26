@@ -111,8 +111,6 @@ class Query:
 
                 self.table.delete(*self.table.get_children())
                 self.table.insert('', 'end', values=data)
-                # with open('query.txt','w') as f:
-                #     f.write(str(data))
 
 
     def query_exact_id(self):
@@ -157,5 +155,6 @@ class Query:
                 # self.table.delete(*self.table.get_children())
                 # 得到的是二维元组，一个元组元素就是一条学生信息
                 for i in range(num):
+                    self.table.delete(*self.table.get_children())
                     self.table.insert('', 'end', values=data[i])
 
