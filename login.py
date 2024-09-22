@@ -1,7 +1,12 @@
-from tkinter import messagebox
-from home import *
+import configparser
+from tkinter import messagebox, Frame, BOTH, Label, CENTER, StringVar, IntVar, Entry, Button, END
+
 import pymysql
-from database import *
+
+from database import Database
+from home import Home
+
+
 # 创建新的数据库、数据表
 
 
@@ -64,6 +69,7 @@ class Login:
         # 密码pwd输入框
         self.entry_pwd = Entry(self.frame1, textvariable=self.get_db[3], show='*', width=20, font=('Arial', 12))
         self.entry_pwd.place(x=340, y=270, width=200, height=28)
+        self.get_db[3].set('root')  # 设置默认值
         self.entry_pwd.focus()
 
         # 确认按钮
@@ -99,11 +105,22 @@ class Login:
                 db = pymysql.connect(host=host, user=user, password=pwd, port=int(port), charset='utf8')
                 # 将数据库连接的参数保存为文件,方便后续数据库连接使用
                 # 若文件已存在,则覆盖,否则创建
-                with open('config.ini', 'w') as f:
-                    f.write(host + '\n')
-                    f.write(port + '\n')
-                    f.write(user + '\n')
-                    f.write(pwd + '\n')
+
+                # 创建 ConfigParser 对象
+                config = configparser.ConfigParser()
+
+                # 添加 section 和键值对
+                config['database'] = {
+                    'host': host,
+                    'port': port,
+                    'user': user,
+                    'pwd': pwd
+                }
+
+                # 将配置写入 config.ini 文件
+                with open('config.ini', 'w', encoding='utf8') as f:
+                    config.write(f)
+
                 cursor = db.cursor()
                 cursor.execute("SELECT VERSION()")
                 # 调用自定义数据库操作模块中的DataBase类,
