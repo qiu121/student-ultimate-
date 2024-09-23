@@ -80,11 +80,11 @@ class Home:
         vbar.place(x=730, y=80, height=450)
         self.table.configure(yscrollcommand=vbar.set)
         self.table.place(x=10, y=80, width=700)
-        self.table.bind('<ButtonRelease-1>', self.treeviewClick)
+        self.table.bind('<ButtonRelease-1>', self.treeview_click)
 
         self.show_all()
 
-    def treeviewClick(self, event):  # 单击事件
+    def treeview_click(self, event):  # 单击事件
         if self.table.selection():
             for item in self.table.selection():
                 item_text = self.table.item(item, "values")
