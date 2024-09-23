@@ -32,6 +32,9 @@ class Login:
         # self.window.minsize(800, 500)
         # self.window.maxsize(800, 500)
         # self.window.overrideredirect(True)  # 去掉标题栏
+
+        # 绑定回车键事件，触发登录操作
+        self.window.bind("<Return>", lambda event: self.login())
         self.login_page()
 
     def login_page(self):
@@ -132,7 +135,10 @@ class Login:
                 # os.remove('config.ini')  # 删ta除生成的配置文件
 
                 messagebox.showinfo('提示', '数据库连接成功\n数据库版本：%s' % data)
-                self.frame1.destroy()  # 销毁窗口
+
+                # 销毁登录界面，并解绑回车事件
+                self.frame1.destroy()
+                self.window.unbind("<Return>")  # 解绑回车事件
                 Home(self.window)  # 转到home模块，引用其中的类，创建主窗口
 
                 # 关闭数据库连接

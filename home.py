@@ -25,6 +25,8 @@ class Home:
         self.window.geometry('%dx%d+%d-%d' % (width, height, x, y))  # 设置窗口大小及坐标,居中显示
         self.window.resizable(False, False)  # 禁止改变窗口大小
 
+        # 为 window 绑定回车事件
+        self.window.bind('<Return>', self.handle_enter_key)
         self.main_page()
 
     def main_page(self):
@@ -41,11 +43,13 @@ class Home:
         self.label_frame_query.place(x=200, y=10)
 
         # 添加左边功能按钮
+        self.buttons = []  # 用于存储按钮的列表
         text = ['显示全部', '添加信息', '查询信息', '修改信息', '删除信息', '退出系统']
         for i in range(len(text)):
             self.btn = Button(self.pane_left, text=text[i], font=('宋体', 15), width=15, height=2)
             self.btn.place(x=40, y=60 + i * 80)
             self.btn.bind('<Button-1>', self.btn_click)
+            self.buttons.append(self.btn)
 
         # 添加右边Treeview,显示学生信息
         columns = ['学号', '姓名', '性别', '年龄', '学院', '班级', '专业']
@@ -95,6 +99,13 @@ class Home:
         for row in data:
             # 插入从第2个字段开始的值 (跳过ID),tag记录ID
             self.table.insert('', 0, values=row[1:], tags=(row[0],))
+
+    def handle_enter_key(self, event):
+        """处理回车键的事件"""
+        for btn in self.buttons:
+            if btn.focus_get() == btn:  # 如果当前有焦点的按钮是其中一个按钮
+                self.btn_click(event)  # 调用相应的点击事件处理函数
+                break
 
     def btn_click(self, event):
         """按钮点击事件"""
